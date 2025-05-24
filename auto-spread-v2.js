@@ -145,7 +145,7 @@ export async function main(ns) {
 			// Transfer files to server.
 			var files = ["hack-daemon.js", "easy-hack.js", "weaken.js", "grow.js", "hack.js", "shareCPU.js"];
 			ns.print(`[${s}] Copying files...`);
-			var success = await ns.scp(files, "home", s);
+			var success = await ns.scp(files, s, "home");
 			ns.print((success ? "Successfully transferred." : `ERROR: Transfer to [${s}] failed!`));
 
 			// Run hacker-daemon/easy-hack
