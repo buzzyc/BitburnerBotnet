@@ -108,7 +108,7 @@ export async function main(ns) {
 	hackTargets = hackTargets.filter( function(x) {
 		return 	(getIsTarget(ns, x) || (manipulateStocks && getServerTIXSymbol(x) != undefined))
 			&& ns.hasRootAccess(x)
-			&& ns.getServerRequiredHackingLevel(x) <= ns.getPlayer().hacking;
+			&& ns.getServerRequiredHackingLevel(x) <= ns.getHackingLevel();
 	});	
 	
 	hackTargets.forEach( function(x) {
@@ -137,7 +137,7 @@ export async function main(ns) {
 	 */
 	expTargets = expTargets.filter ( (e) => !hackTargets.includes(e) );
 	expTargets = expTargets.filter( function(x) {
-		return ns.hasRootAccess(x) && ns.getServerMaxMoney(x) > 0 && ns.getServerRequiredHackingLevel(x) <= ns.getPlayer().hacking;
+		return ns.hasRootAccess(x) && ns.getServerMaxMoney(x) > 0 && ns.getServerRequiredHackingLevel(x) <= ns.getHackingLevel();
 	});
 	expTargets.forEach( function(x) {
 		var TIX = getServerTIXSymbol(x) != undefined ? getServerTIXSymbol(x) : "";
@@ -152,7 +152,7 @@ export async function main(ns) {
 	 * 		Criteria : 	Required hacking level is greater than the player's
 	 * 					Does not have root access yet
 	 */
-	hardTargets = hardTargets.filter ( x => ns.getServerRequiredHackingLevel(x) > ns.getPlayer().hacking || !ns.hasRootAccess(x) );
+	hardTargets = hardTargets.filter ( x => ns.getServerRequiredHackingLevel(x) > ns.getHackingLevel() || !ns.hasRootAccess(x) );
 	hardTargets.forEach ( function(x) {
 		var TIX = getServerTIXSymbol(x) != undefined ? getServerTIXSymbol(x) : "";
 		jHardTargetServers.push({"target" : x, "thresholdModifier": threshModifier, 
@@ -219,7 +219,7 @@ export async function main(ns) {
 		// 0. Check if any of the hard servers can be used (We get this list from auto-spread after some filtering above)
 		var newHackables = [];
 		for(var i = 0; i < hardTargets.length; i++) {
-			if (ns.hasRootAccess(hardTargets[i]) && ns.getServerRequiredHackingLevel(hardTargets[i]) <= ns.getPlayer().hacking) {
+			if (ns.hasRootAccess(hardTargets[i]) && ns.getServerRequiredHackingLevel(hardTargets[i]) <= ns.getHackingLevel()) {
 				var TIX = getServerTIXSymbol(hardTargets[i]) != undefined ? getServerTIXSymbol(hardTargets[i]) : "";
 				ns.print(`[HARD] We can now hack [${hardTargets[i]}]. Processing now!`);
 				if (ns.hasRootAccess(hardTargets[i]) && (getIsTarget(ns, hardTargets[i]) || (manipulateStocks && TIX != ""))) {
@@ -241,7 +241,7 @@ export async function main(ns) {
 					ns.print(`[HARD] Ignoring [${hardTargets[i]}]? Its not up to standard?`);
 				}
 			} else {
-				//ns.print(`[HARD] Ignoring [${hardTargets[i]}]? Root: ${ns.hasRootAccess(hardTargets[i])} | Req. Hack: ${ns.getServerRequiredHackingLevel(hardTargets[i])} / ${ns.getPlayer().hacking}`);
+				//ns.print(`[HARD] Ignoring [${hardTargets[i]}]? Root: ${ns.hasRootAccess(hardTargets[i])} | Req. Hack: ${ns.getServerRequiredHackingLevel(hardTargets[i])} / ${ns.getHackingLevel()}`);
 			}
 		}
 
